@@ -6,6 +6,7 @@ import { ClientScheduleAppointmentModel, SaveScheduleModel, ScheduleAppointmentM
 import { FormControl, FormsModule, NgForm } from '@angular/forms';
 import { IDialogmanagerService } from '../../../services/idialog-manager.service';
 import { CommonModule } from '@angular/common';
+import { provideNativeDateAdapter } from '@angular/material/core';
 //@angular/material
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
@@ -32,7 +33,10 @@ import { Subscription } from 'rxjs';
   ],
   templateUrl: './schedule-calendar.component.html',
   styleUrl: './schedule-calendar.component.scss',
-  providers: [{provide: SERVICES_TOKEN.DIALOG, useClass: DialogManagerService}]
+  providers: [
+    provideNativeDateAdapter(),
+    {provide: SERVICES_TOKEN.DIALOG, useClass: DialogManagerService}
+  ]
 })
 export class ScheduleCalendarComponent implements OnInit, AfterViewInit, OnChanges{
 
@@ -106,6 +110,11 @@ export class ScheduleCalendarComponent implements OnInit, AfterViewInit, OnChang
       clientId: this.newSchedule.clientId!,
       clientName: this.clients.find(c => c.id === this.newSchedule.clientId!)!.name
     }
+    this.monthSchedule.scheduledAppointments.push(saved)
+    this.onScheduleClient.emit(saved)
+    this.buildTable()
+    form.resetForm()
+    this.newSchedule = { startAt: undefined, endAt: undefined, clientId: undefined }
   }
 
   requestDelete(schedule: ClientScheduleAppointmentModel){
@@ -131,9 +140,9 @@ export class ScheduleCalendarComponent implements OnInit, AfterViewInit, OnChang
   }
 
   private buildTable() {
-    const appointments = this.monthSchedule.scheduleAppointments.filter(a =>
+    const appointments = this.monthSchedule.scheduledAppointments.filter(a =>
       this.monthSchedule.year === this._selected.getFullYear() &&
-      this.monthSchedule.month === this._selected.getMonth() &&
+      this.monthSchedule.month - 1 === this._selected.getMonth() &&
       a.day === this._selected.getDate()
     )
     this.dataSource = new MatTableDataSource<ClientScheduleAppointmentModel>(appointments)
