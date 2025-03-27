@@ -46,7 +46,7 @@ export class ClientTableComponent implements AfterViewInit, OnChanges, OnDestroy
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['clients'] && this.clients) {
       this.dataSource = new MatTableDataSource<ClientModelTable>(this.clients)
-      //acho que esse if aninhado pode virar if com 3 conjunções. A && B && C
+      //NOTE: acho que esse if aninhado pode virar if com 3 conjunções. A && B && C
       if (this.paginator) {
         this.dataSource.paginator = this.paginator
       }

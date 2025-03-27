@@ -30,7 +30,7 @@ export class ClientFormComponent {
   }
 
   @Output() clientSubmitted = new EventEmitter<ClientModelForm>()
-  //a tipagem da saída do eventEmitter ajuda o typescript a indicar o argumento certo a passar pro emit()
+  //NOTE: a tipagem da saída do eventEmitter ajuda o typescript a indicar o argumento certo a passar pro emit()
 
   onSubmit(_: NgForm){
     this.clientSubmitted.emit(this.client);

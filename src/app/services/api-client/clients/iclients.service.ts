@@ -10,7 +10,7 @@ export interface IClientService {
   delete(id: number): Observable<void>;
 
   list(): Observable<ListClientResponse[]>;
-  //essa nomenclatura é estranha. Lista de um objeto que se chama "lista"?
+  //NOTE: essa nomenclatura é estranha. Lista de um objeto que se chama "lista"?
 
   findById(id: number): Observable<DetailClientResponse>;
 }
